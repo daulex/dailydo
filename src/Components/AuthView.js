@@ -1,4 +1,5 @@
 import React from 'react';
+import AuthMenu from './AuthMenu';
 
 export class AuthView extends React.Component{
     constructor(props){
@@ -44,42 +45,10 @@ export class AuthView extends React.Component{
             }
         }
         
-
-        this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
     }
 
-    makeMenuItemClass(value){
-        let res = "nav-button";
-        
-        if(this.state.action === value){
-            res += " active";
-        }
-        return res;
-    }
-    handleMenuButtonClick(e){
-        
-        let action = e.target.getAttribute("attr-action");
-        
-        if(!action) return;
-        if(action === this.state.action) return;
-
+    setCurrentAction = (action) => {
         this.setState({action: action});
-    }
-
-    get renderMenu(){
-        return(
-            <nav className="auth-wrap__nav">
-                {Object.keys(this.actions).map((key, i) => (
-                <button key={"action-"+i} 
-                    onClick={this.handleMenuButtonClick} 
-                    attr-action={this.actions[key].name} 
-                    className={this.makeMenuItemClass(this.actions[key].name)}
-                    >
-                    {this.actions[key].title}
-                </button>
-                ))}
-            </nav>
-        );
     }
 
     get renderInputs (){
@@ -108,7 +77,7 @@ export class AuthView extends React.Component{
         return(
             <div className="auth-wrap">
                 
-                {this.renderMenu}
+                <AuthMenu setCurrentAction={this.setCurrentAction} action={this.state.action} actions={this.actions} />
                 
                 <form action="#" autoComplete="off">
                     {this.renderInputs}
