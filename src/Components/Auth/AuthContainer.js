@@ -1,7 +1,8 @@
 import React from 'react';
 import AuthMenu from './AuthMenu';
+import {AuthForm} from './AuthForm';
 
-export class AuthView extends React.Component{
+export default class AuthContainer extends React.Component{
     constructor(props){
         super(props);
         this.state = { 
@@ -30,7 +31,7 @@ export class AuthView extends React.Component{
         this.inputs = {
             email: {
                 name: "email",
-                type: "email",
+                type: "text",
                 label: "Email"
             },
             password: {
@@ -50,41 +51,18 @@ export class AuthView extends React.Component{
     setCurrentAction = (action) => {
         this.setState({action: action});
     }
-
-    get renderInputs (){
-        const inputList = this.actions[this.state.action].inputs;
-        
-        return(
-            <fieldset>
-            {inputList.map((key,i) => (
-                <label className="input-wrap" key={"label-"+i}>
-                    <div className="input-wrap__label">{this.inputs[key].label}</div>
-                    <input key={"input-"+i} 
-                        name={this.inputs[key].name} 
-                        type={this.inputs[key].type} 
-                        placeholder={this.inputs[key].label}
-                        autoComplete="off"
-                    />
-                </label>
-            ))}
-            </fieldset>
-        )
-    }
+    
 
     render(){
         const submitLabel = this.actions[this.state.action].buttonLabel;
+        const inputList = this.actions[this.state.action].inputs;
         
         return(
             <div className="auth-wrap">
                 
                 <AuthMenu setCurrentAction={this.setCurrentAction} action={this.state.action} actions={this.actions} />
                 
-                <form action="#" autoComplete="off">
-                    {this.renderInputs}
-                    <div className="submit-wrap">
-                        <input type="submit" value={submitLabel} />
-                    </div>
-                </form>
+                <AuthForm inputs={this.inputs} inputList={inputList} submitLabel={submitLabel} />
             </div>
         );
     }

@@ -1,10 +1,10 @@
 // import { TodoList } from './Components/TodoList';
-import { AuthView } from './Components/AuthView';
+import AuthContainer from './Components/Auth/AuthContainer';
 
 function App() {
   return (
     <div className="App">
-      <AuthView />
+      <AuthContainer />
       {/* <TodoList /> */}
     </div>
   );
