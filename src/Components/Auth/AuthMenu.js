@@ -1,14 +1,8 @@
 import React from 'react';
+import Nav from 'react-bootstrap/Nav';
 
 export default function AuthMenu(props){
-    const makeMenuItemClass = (value) => {
-        let res = "nav-button";
-        
-        if(props.action === value){
-            res += " active";
-        }
-        return res;
-    }
+
     const handleMenuButtonClick = (e) => {
         
         let action = e.target.getAttribute("attr-action");
@@ -21,17 +15,17 @@ export default function AuthMenu(props){
 
     
     return(
-        <nav className="auth-wrap__nav">
+        <Nav variant={"tabs"} defaultActiveKey="action-0">
             {Object.keys(props.actions).map((key, i) => (
-            <button key={"action-"+i} 
-                onClick={handleMenuButtonClick} 
-                attr-action={props.actions[key].name} 
-                className={makeMenuItemClass(props.actions[key].name)}
-                >
-                {props.actions[key].title}
-            </button>
+            <Nav.Item>
+                <Nav.Link eventKey={"action-"+i}
+                          onClick={handleMenuButtonClick}
+                          attr-action={props.actions[key].name}
+                          title={props.actions[key].title}
+                >{props.actions[key].title}</Nav.Link>
+            </Nav.Item>
             ))}
-        </nav>
+        </Nav>
     );
 
 }

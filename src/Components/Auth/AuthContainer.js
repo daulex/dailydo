@@ -51,7 +51,6 @@ export default class AuthContainer extends React.Component{
     setCurrentAction = (action) => {
         this.setState({action: action});
     }
-    
 
     render(){
         const submitLabel = this.actions[this.state.action].buttonLabel;
@@ -62,7 +61,7 @@ export default class AuthContainer extends React.Component{
                 
                 <AuthMenu setCurrentAction={this.setCurrentAction} action={this.state.action} actions={this.actions} />
                 
-                <AuthForm inputs={this.inputs} inputList={inputList} submitLabel={submitLabel} />
+                <AuthForm action={this.state.action} inputs={this.inputs} inputList={inputList} submitLabel={submitLabel} />
             </div>
         );
     }

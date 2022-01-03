@@ -1,4 +1,6 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
+
 
 let regEmail = /.+@.+\..+/;
 
@@ -51,6 +53,11 @@ export class AuthForm extends React.Component{
             // TODO: pass data to parent component
         }
     }
+    componentDidUpdate( prevProps) {
+        if (prevProps.action !== this.props.action) {
+            this.setState({errors: []});
+        }
+    }
     render(){
 
         return(
@@ -76,8 +83,9 @@ export class AuthForm extends React.Component{
                         </label>
                     ))}
                 </fieldset>
-                <div className="submit-wrap">
-                    <input type="submit" value={this.props.submitLabel} disabled={this.state.errors.length > 0} />
+
+            <div className="submit-wrap d-grid gap-2">
+                    <Button size="lg" variant="primary" type="submit" disabled={this.state.errors.length > 0}>{this.props.submitLabel}</Button>
                 </div>
             </form>
         );
