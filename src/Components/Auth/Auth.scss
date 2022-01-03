@@ -45,6 +45,9 @@
                 background: $cta;
                 color: $white;
                 font-size: 18px;
+                &[disabled]{
+                    opacity: .3;
+                }
             }
         }
     }

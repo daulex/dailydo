@@ -31,7 +31,7 @@ export default class AuthContainer extends React.Component{
         this.inputs = {
             email: {
                 name: "email",
-                type: "text",
+                type: "email",
                 label: "Email"
             },
             password: {
