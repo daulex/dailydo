@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 
 let regEmail = /.+@.+\..+/;
@@ -8,12 +9,12 @@ let regEmail = /.+@.+\..+/;
 export class AuthForm extends React.Component{
     constructor(props){
         super(props);
-
+        console.log(this.props.errors);
         this.state = {
             email: '',
             password: '',
             password_confirm: '',
-            errors: []
+            errors: this.props.errors || []
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -50,44 +51,52 @@ export class AuthForm extends React.Component{
         e.preventDefault();
         this.validate();
         if(!this.state.errors.length){
-            // TODO: pass data to parent component
+
+            const data = this.props.inputList.map(fieldRef => {
+                return this.state[fieldRef];
+            });
+
+            this.props.processAuth(data);
+
         }
     }
     componentDidUpdate( prevProps) {
         if (prevProps.action !== this.props.action) {
             this.setState({errors: []});
         }
+        // todo: fix this, make it so login errors shows each time you submit wrong info
+        if(prevProps.errors.length === 0 && this.props.errors.length === 1){
+            this.setState({errors: this.props.errors});
+        }
     }
     render(){
 
         return(
-            <form action="#" autoComplete="off" onSubmit={this.handleSubmit}>
+            <Form action="#" autoComplete="off" onSubmit={this.handleSubmit}>
                 {this.state.errors && <ul className='errors'>
                     {this.state.errors.map((err,i) => (
                         <li key={i}>{err}</li>
                     ))}
                 </ul> }
-                <fieldset>
-                    {this.props.inputList.map((fieldRef,i) => (
-                        <label className="input-wrap" key={"label-"+i}>
-                            <div className="input-wrap__label">{this.props.inputs[fieldRef].label}</div>
-                            <input key={"input-"+i}
-                                   name={this.props.inputs[fieldRef].name}
-                                   type={this.props.inputs[fieldRef].type}
-                                   placeholder={this.props.inputs[fieldRef].label}
-                                   autoComplete="off"
-                                   onChange={this.handleChange}
-                                   onBlur={this.validate}
-                                   value={this.state[fieldRef]}
-                            />
-                        </label>
-                    ))}
-                </fieldset>
+                {this.props.inputList.map((fieldRef, i) => (
+                    <Form.Group className="mb-3" controlId={this.props.inputs[fieldRef].name} key={"field-"+i}>
+                        <Form.Label>{this.props.inputs[fieldRef].label}</Form.Label>
+                        <Form.Control
+                            type={this.props.inputs[fieldRef].type}
+                            onChange={this.handleChange}
+                            onBlur={this.validate}
+                            placeholder={this.props.inputs[fieldRef].placeholder}
+                            value={this.state[fieldRef]}
+                            name={this.props.inputs[fieldRef].name}
+                    />
+                    </Form.Group>
+                ))}
+
 
             <div className="submit-wrap d-grid gap-2">
                     <Button size="lg" variant="primary" type="submit" disabled={this.state.errors.length > 0}>{this.props.submitLabel}</Button>
                 </div>
-            </form>
+            </Form>
         );
     }
 

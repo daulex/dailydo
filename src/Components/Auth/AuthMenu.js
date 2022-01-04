@@ -17,7 +17,7 @@ export default function AuthMenu(props){
     return(
         <Nav variant={"tabs"} defaultActiveKey="action-0">
             {Object.keys(props.actions).map((key, i) => (
-            <Nav.Item>
+            <Nav.Item key={"menu-" + i}>
                 <Nav.Link eventKey={"action-"+i}
                           onClick={handleMenuButtonClick}
                           attr-action={props.actions[key].name}
