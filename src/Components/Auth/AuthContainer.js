@@ -60,8 +60,8 @@ export default class AuthContainer extends React.Component{
     processAuth = (data) => {
 
         if(this.state.action === "login"){
-            // const authUrl = 'http://ddapi.awave.site/wp-json/jwt-auth/v1/token';
-            const authUrl = 'https://ddapi.codekip.com/wp-json/jwt-auth/v1/token';
+            const authUrl = 'http://ddapi.awave.site/wp-json/jwt-auth/v1/token';
+            // const authUrl = 'https://ddapi.codekip.com/wp-json/jwt-auth/v1/token';
             const postBody = {
                 username: 'kirillgalenko@gmail.com',
                 password: 'BfgNOH9Bv0SAgbIUU8'

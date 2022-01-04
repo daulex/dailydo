@@ -1,6 +1,6 @@
 import React from 'react';
 import { TodoItem } from './TodoItem';
-import todosData from '../Data/todosData';
+import {todosData} from '../Data/todosData';
 
 export class TodoList extends React.Component{
     constructor(props){
@@ -16,7 +16,7 @@ export class TodoList extends React.Component{
                         ...todo,
                         completed: !todo.completed
                     };
-                };
+                }
                 return todo;
             })
         });
@@ -34,12 +34,19 @@ export class TodoList extends React.Component{
     }
 
     componentDidMount() {
-        fetch('http://ddapi.awave.site/wp-json/myplugin/v1/author/1')
-        .then(res => res.json())
-        .then((data) => {
-          this.setState({ contacts: data })
-          console.log(data);
+        const authUrl = 'http://ddapi.awave.site/wp-json/myplugin/v1/author/1';
+        const token = localStorage.getItem('token');
+
+        fetch(authUrl,{
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer' + token
+            }
         })
-        .catch(console.log)
+            .then(response => response.json())
+            .then(data => {
+
+                console.log(JSON.parse(data));
+            });
       }
 }

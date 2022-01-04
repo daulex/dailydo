@@ -1,4 +1,4 @@
-const todosData = [
+export const todosData = [
     {
       id: 1,
       text: "Walk the dog",
@@ -25,5 +25,3 @@ const todosData = [
       completed: true
     }
   ]
-  
-  export default todosData;
