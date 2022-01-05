@@ -1,11 +1,11 @@
 import React from 'react';
 import { TodoItem } from './TodoItem';
-import {todosData} from '../Data/todosData';
+// import {todosData} from '../Data/todosData';
 
 export class TodoList extends React.Component{
     constructor(props){
         super(props);
-        this.state = { todos: todosData };
+        this.state = { todos: [], todosCache: [] };
     }
     handleChange = id => {
         const { todos } = this.state;
@@ -19,7 +19,25 @@ export class TodoList extends React.Component{
                 }
                 return todo;
             })
+        }, function(){
+            const authUrl = 'http://ddapi.awave.site/wp-json/ddapi/update-todo';
+            const token = localStorage.getItem('token');
+
+            fetch(authUrl,{
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer' + token
+                },
+                body: JSON.stringify(this.state)
+            }).then(response => {
+                if(response.status !== 200){
+                    console.log('Something went wrong');
+                }
+            });
         });
+
+
+
     }
 
     render(){
@@ -45,8 +63,8 @@ export class TodoList extends React.Component{
         })
             .then(response => response.json())
             .then(data => {
-
-                console.log(JSON.parse(data));
+                const parsed = JSON.parse(data);
+                this.setState({todos: parsed, todosCache: parsed })
             });
       }
 }

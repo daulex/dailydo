@@ -6,7 +6,12 @@ export default class App extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            token: localStorage.getItem('token') || false
+            token: localStorage.getItem('token') || false,
+            conf: {
+                apiDomain: 'http://ddapi.awave.site',
+                todosRoute: '/wp-json/myplugin/v1/author/1',
+                authRoute: '/wp-json/jwt-auth/v1/token'
+            }
         }
         this.pushToken = this.pushToken.bind(this);
     }
