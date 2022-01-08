@@ -2,6 +2,7 @@ import React from 'react';
 import AuthMenu from './AuthMenu';
 import { AuthForm } from './AuthForm';
 
+
 export default class AuthContainer extends React.Component{
     constructor(props){
         super(props);
@@ -60,6 +61,7 @@ export default class AuthContainer extends React.Component{
     processAuth = (data) => {
 
         if(this.state.action === "login"){
+
             const authUrl = 'http://ddapi.awave.site/wp-json/jwt-auth/v1/token';
             // const authUrl = 'https://ddapi.codekip.com/wp-json/jwt-auth/v1/token';
             const postBody = {
@@ -99,7 +101,7 @@ export default class AuthContainer extends React.Component{
     render(){
         const submitLabel = this.actions[this.state.action].buttonLabel;
         const inputList = this.actions[this.state.action].inputs;
-        console.log('re-render in progress');
+
         return(
             <div className="auth-wrap">
                 

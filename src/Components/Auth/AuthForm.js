@@ -70,7 +70,7 @@ export class AuthForm extends React.Component{
         }
     }
     render(){
-
+        // // TODO: rework inputs to floating labels
         return(
             <Form action="#" autoComplete="off" onSubmit={this.handleSubmit}>
                 {this.state.errors && <ul className='errors'>
