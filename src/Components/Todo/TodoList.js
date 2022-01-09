@@ -116,13 +116,13 @@ export class TodoList extends React.Component{
                 <div className="todos-items">
                     {todoItemComponents}
                 </div>
-                <Form onSubmit={this.handleTaskCreate}>
+                <Form onSubmit={this.handleTaskCreate} className='new-task-form'>
 
                     <Form.Label htmlFor="inlineFormInputName" visuallyHidden>
                         Name
                     </Form.Label>
                     <Form.Control name="newTaskText" id="newTaskText" placeholder="Describe your new task" />
-                    <Button type="submit">Submit</Button>
+                    <Button type="submit">Add</Button>
                 </Form>
             </div>
         );

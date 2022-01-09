@@ -24,12 +24,20 @@ export const TodoItem = (props) => {
         setEditTaskShowing(!editTaskShowing);
     }
     const taskActions = () => {
+        const actionButtonClassList = ["icon-button", "icon-button__more"];
+
+        if(taskActionsShowing){
+            actionButtonClassList.push("open");
+        }else{
+            actionButtonClassList.push("closed");
+        }
+
         return (
             <div className="task-actions-anchor">
                 <button
                     onClick={() => setTaskActionsShowing(!taskActionsShowing)}
-                    className="icon-button icon-button__more"
-                ><Icon color="#f00" size="14px" icon={taskActionsShowing ? 'close' : 'more'} /></button>
+                    className={actionButtonClassList.join(" ")}
+                ><Icon color={taskActionsShowing ? '#fff' : '#f00'} size="14px" icon={taskActionsShowing ? 'close' : 'more'} /></button>
                 {!!taskActionsShowing && taskActionsDropdown()}
             </div>
         );
@@ -82,7 +90,9 @@ export const TodoItem = (props) => {
     }
     return(
         <div className="list-item" id={"item-" + props.item.id}>
-            <input type="checkbox" onChange={() => {props.handleChange(props.item.id)}} checked={checked} />
+            <div className='check-wrap'>
+                <input className="check" type="checkbox" onChange={() => {props.handleChange(props.item.id)}} checked={checked} />
+            </div>
             {editTaskShowing ?
                 <form className="edit-task" onSubmit={handleEditSubmit}>
                     <Form.Control type="text" defaultValue={props.item.text} />

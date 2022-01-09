@@ -5,8 +5,45 @@
     margin: auto;
     .list-item{
         display: flex;
+        align-items: flex-start;
+        padding: 5px 0;
+        .check-wrap{
+            padding: 1px 10px 0 0;
+        }
         &__label{
             flex: 1
         }
+        .edit-task{
+            display: flex;
+            flex:1;
+        }
+    }
+    .task-actions-anchor{
+        position: relative;
+        .icon-button__more.open{
+            background: $blue;
+        }
+        .task-actions{
+            position: absolute;
+            top:0;
+            right: 25px;
+            display: flex;
+            border: 1px solid $blue;
+            border-radius: 5px 0 5px 5px;
+            .task-action{
+                padding: 5px;
+                display: flex;
+                justify-content: center;
+            }
+
+        }
+    }
+    .new-task-form{
+        display: flex;
+        padding-top: 20px;
+        button{
+            margin-left: 10px;
+        }
     }
 }
+
