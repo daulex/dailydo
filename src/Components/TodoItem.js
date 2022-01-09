@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import {Icon} from "./IcoMoon/Icon";
 
 export const TodoItem = (props) => {
     const checked = !!props.item.completed;
@@ -13,6 +14,7 @@ export const TodoItem = (props) => {
             <div className="list-item__label">
                 {props.item.text}
             </div>
+            <Icon color="#444" size={100} icon="star" />
             <Button onClick={deleteItem}>Delete</Button>
         </div>
     );
