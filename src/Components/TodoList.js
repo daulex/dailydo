@@ -3,6 +3,7 @@ import { TodoItem } from './TodoItem';
 // import {todosData} from '../Data/todosData';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import {array_move} from '../utilities';
 
 export class TodoList extends React.Component{
     constructor(props){
@@ -12,9 +13,9 @@ export class TodoList extends React.Component{
         this.handleTaskCreate = this.handleTaskCreate.bind(this);
         this.handleTaskDelete = this.handleTaskDelete.bind(this);
         this.syncStateToDB = this.syncStateToDB.bind(this);
+        this.handleTaskMove = this.handleTaskMove.bind(this);
     }
     syncStateToDB = () => {
-
         const authUrl = 'http://ddapi.awave.site/wp-json/ddapi/update-todo';
         const token = localStorage.getItem('token');
 
@@ -29,7 +30,6 @@ export class TodoList extends React.Component{
                 console.log('Something went wrong');
             }
         });
-
     };
     handleChange = id => {
         const { todos } = this.state;
@@ -69,6 +69,24 @@ export class TodoList extends React.Component{
             return task.id !== x;
             }) }, this.syncStateToDB);
     }
+    handleTaskMove = (x, direction) => {
+        // this.setState({ todos: this.state.todos.filter(task => {
+        //         return task.id !== x;
+        //     }) }, this.syncStateToDB);
+        const currentIndex = this.state.todos.findIndex(each => each.id === x);
+        let newIndex = currentIndex;
+        const length = this.state.todos.length;
+        if(direction === 'up' && currentIndex !== 0){
+            newIndex--;
+        }else if(direction === 'down' && currentIndex !== length-1){
+            newIndex++;
+        }
+        this.setState(
+            {todos: array_move(this.state.todos, currentIndex, newIndex)},
+            this.syncStateToDB
+        );
+        // console.log(found);
+    }
     render(){
         const todoItemComponents = this.state.todos.map(item => {
             return <TodoItem
@@ -76,6 +94,7 @@ export class TodoList extends React.Component{
                         item={item}
                         handleChange={this.handleChange}
                         handleTaskDelete={this.handleTaskDelete}
+                        handleTaskMove={this.handleTaskMove}
                     />
         });        
         return(

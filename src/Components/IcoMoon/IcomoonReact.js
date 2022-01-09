@@ -38,7 +38,7 @@ function getSvg(icon, iconSet, styles, size, className, rest) {
     let find = function (iconEl) { return iconEl.properties.name.split(", ").includes(icon); };
     let currentIcon = iconSet.icons.find(find);
     let renderPath = function (iconObj) { return function (path, index) {
-        let attrs = (iconObj.attrs && iconObj.attrs[index]) || {};
+        let attrs = (typeof iconObj.attrs && iconObj.attrs[index]) || {};
         return react_1.default.createElement("path", __assign({ style: styles.path, key: index, d: path }, attrs));
     }; };
     if (currentIcon) {
