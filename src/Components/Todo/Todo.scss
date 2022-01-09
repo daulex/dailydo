@@ -1,0 +1,12 @@
+.todos{
+    width: 600px;
+    max-width: 90%;
+    padding: 15px;
+    margin: auto;
+    .list-item{
+        display: flex;
+        &__label{
+            flex: 1
+        }
+    }
+}

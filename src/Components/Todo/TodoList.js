@@ -3,7 +3,7 @@ import { TodoItem } from './TodoItem';
 // import {todosData} from '../Data/todosData';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import {array_move} from '../utilities';
+import {array_move} from '../../utilities';
 
 export class TodoList extends React.Component{
     constructor(props){

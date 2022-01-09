@@ -1,5 +1,5 @@
 import React from 'react';
-import { TodoList } from './Components/TodoList';
+import { TodoList } from './Components/Todo/TodoList';
 import AuthContainer from './Components/Auth/AuthContainer';
 
 export default class App extends React.Component{

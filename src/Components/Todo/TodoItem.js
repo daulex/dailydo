@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 // import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import {Icon} from "./IcoMoon/Icon";
+import {Icon} from "../IcoMoon/Icon";
 
 export const TodoItem = (props) => {
     const [taskActionsShowing, setTaskActionsShowing] = useState(0);
