@@ -1,11 +1,15 @@
 import React, {useState} from 'react';
 // import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import {Icon} from "./IcoMoon/Icon";
 
 export const TodoItem = (props) => {
     const [taskActionsShowing, setTaskActionsShowing] = useState(0);
     const [deleteConfirmShowing, setDeleteConfirmShowing] = useState(0);
+    const [editTaskShowing, setEditTaskShowing] = useState(0);
+
     const checked = !!props.item.completed;
+
     const deleteItem = (e) => {
         e.preventDefault();
         props.handleTaskDelete(props.item.id);
@@ -13,6 +17,11 @@ export const TodoItem = (props) => {
     const moveItem = (e,direction) => {
         e.preventDefault();
         props.handleTaskMove(props.item.id, direction);
+    }
+    const handleEditSubmit = (e) => {
+        e.preventDefault();
+        props.handleTaskEdit(props.item.id, e.target.elements[0].value);
+        setEditTaskShowing(!editTaskShowing);
     }
     const taskActions = () => {
         return (
@@ -30,6 +39,10 @@ export const TodoItem = (props) => {
             <div className="task-actions">
                 <div className="task-action task-actions__edit">
                     <button
+                        onClick={() => {
+                            setEditTaskShowing(!editTaskShowing);
+                            setTaskActionsShowing(!taskActionsShowing);
+                        }}
                         className="icon-button icon-button__edit"
                     ><Icon color="#f00" size="14px" icon="edit" /></button>
                 </div>
@@ -70,9 +83,17 @@ export const TodoItem = (props) => {
     return(
         <div className="list-item" id={"item-" + props.item.id}>
             <input type="checkbox" onChange={() => {props.handleChange(props.item.id)}} checked={checked} />
-            <div className="list-item__label">
-                {props.item.text}
-            </div>
+            {editTaskShowing ?
+                <form className="edit-task" onSubmit={handleEditSubmit}>
+                    <Form.Control type="text" defaultValue={props.item.text} />
+                    <button
+                        type="submit"
+                        className="icon-button icon-button__check"
+                    ><Icon color="#f00" size="14px" icon="check" /></button>
+                </form>
+                :
+                <div className="list-item__label">{props.item.text}</div>}
+
             {taskActions()}
 
 

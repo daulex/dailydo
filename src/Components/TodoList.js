@@ -14,6 +14,7 @@ export class TodoList extends React.Component{
         this.handleTaskDelete = this.handleTaskDelete.bind(this);
         this.syncStateToDB = this.syncStateToDB.bind(this);
         this.handleTaskMove = this.handleTaskMove.bind(this);
+        this.handleTaskEdit = this.handleTaskEdit.bind(this);
     }
     syncStateToDB = () => {
         const authUrl = 'http://ddapi.awave.site/wp-json/ddapi/update-todo';
@@ -45,11 +46,25 @@ export class TodoList extends React.Component{
             })
         }, this.syncStateToDB);
     }
+    handleTaskEdit = (id, newText) => {
+        const { todos } = this.state;
+        this.setState({
+            todos: todos.map(todo => {
+                if(todo.id === id){
+                    return {
+                        ...todo,
+                        text: newText
+                    };
+                }
+                return todo;
+            })
+        }, this.syncStateToDB);
+    }
     handleTaskCreate = e => {
         e.preventDefault();
-        let val = e.target.elements[1].value;
+        let val = e.target.elements[0].value;
         if(val.length){
-            e.target.elements[1].value = '';
+            e.target.elements[0].value = '';
 
             const ids = this.state.todos.map(object => {
                 return object.id;
@@ -70,9 +85,7 @@ export class TodoList extends React.Component{
             }) }, this.syncStateToDB);
     }
     handleTaskMove = (x, direction) => {
-        // this.setState({ todos: this.state.todos.filter(task => {
-        //         return task.id !== x;
-        //     }) }, this.syncStateToDB);
+
         const currentIndex = this.state.todos.findIndex(each => each.id === x);
         let newIndex = currentIndex;
         const length = this.state.todos.length;
@@ -85,7 +98,7 @@ export class TodoList extends React.Component{
             {todos: array_move(this.state.todos, currentIndex, newIndex)},
             this.syncStateToDB
         );
-        // console.log(found);
+
     }
     render(){
         const todoItemComponents = this.state.todos.map(item => {
@@ -95,6 +108,7 @@ export class TodoList extends React.Component{
                         handleChange={this.handleChange}
                         handleTaskDelete={this.handleTaskDelete}
                         handleTaskMove={this.handleTaskMove}
+                        handleTaskEdit={this.handleTaskEdit}
                     />
         });        
         return(
@@ -103,11 +117,12 @@ export class TodoList extends React.Component{
                     {todoItemComponents}
                 </div>
                 <Form onSubmit={this.handleTaskCreate}>
-                    <Button type="submit">Submit</Button>
+
                     <Form.Label htmlFor="inlineFormInputName" visuallyHidden>
                         Name
                     </Form.Label>
-                    <Form.Control name="newTaskText" id="newTaskText" placeholder="Jane Doe" />
+                    <Form.Control name="newTaskText" id="newTaskText" placeholder="Describe your new task" />
+                    <Button type="submit">Submit</Button>
                 </Form>
             </div>
         );
