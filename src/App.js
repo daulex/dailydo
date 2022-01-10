@@ -1,5 +1,6 @@
 import React from 'react';
 import { TodoList } from './Components/Todo/TodoList';
+import { Nav } from './Components/Nav/Nav';
 import AuthContainer from './Components/Auth/AuthContainer';
 
 export default class App extends React.Component{
@@ -14,18 +15,23 @@ export default class App extends React.Component{
             }
         }
         this.pushToken = this.pushToken.bind(this);
+        this.destroyToken = this.destroyToken.bind(this);
     }
 
     pushToken = (token) => {
         this.setState({token: token});
     }
-
+    destroyToken = (e) => {
+        e.preventDefault();
+        this.setState({token: false});
+        localStorage.removeItem('token');
+    }
     render(){
 
         return (
             <div className="App">
                 {this.state.token ?
-                    <TodoList /> :
+                    <div><Nav destroyToken={this.destroyToken} /><TodoList /></div> :
                     <AuthContainer pushToken={this.pushToken} />}
             </div>
         );
