@@ -1,19 +1,22 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-
+import {findGetParameter} from "../../utilities";
 
 let regEmail = /.+@.+\..+/;
 
+const resetEmail = findGetParameter('em');
+const resetToken = findGetParameter('to');
 
 export class AuthForm extends React.Component{
     constructor(props){
         super(props);
-        console.log(this.props.errors);
         this.state = {
             email: '',
             password: '',
             password_confirm: '',
+            reset_email: resetEmail,
+            reset_token: resetToken,
             errors: this.props.errors || []
         };
 
@@ -88,6 +91,7 @@ export class AuthForm extends React.Component{
                             placeholder={this.props.inputs[fieldRef].placeholder}
                             value={this.state[fieldRef]}
                             name={this.props.inputs[fieldRef].name}
+                            disabled={this.props.inputs[fieldRef].disabled}
                     />
                     </Form.Group>
                 ))}

@@ -2,14 +2,15 @@ import React from 'react';
 import AuthMenu from './AuthMenu';
 import { AuthForm } from './AuthForm';
 
-
 export default class AuthContainer extends React.Component{
     constructor(props){
         super(props);
+
         this.state = { 
-            action: "login",
+            action: this.props.action ?? "login",
             errors: []
         };
+
         this.actions = {
             login: {
                 name: "login",
@@ -28,14 +29,33 @@ export default class AuthContainer extends React.Component{
                 title: "Recover",
                 buttonLabel: "Request reset link",
                 inputs: ["email"]
+            },
+            reset: {
+                name: "reset",
+                title: "Reset",
+                buttonLabel: "Reset password",
+                inputs: ["reset_email", "reset_token", "password", "password_confirm"]
             }
         }
+
         this.inputs = {
             email: {
                 name: "email",
                 type: "email",
                 label: "Email",
                 placeholder: "name@example.com"
+            },
+            reset_email: {
+                name: "reset_email",
+                type: "text",
+                label: "Reset email",
+                disabled: "disabled"
+            },
+            reset_token: {
+                name: "key",
+                type: "key",
+                label: "Key",
+                disabled: "disabled"
             },
             password: {
                 name: "password",
@@ -59,16 +79,13 @@ export default class AuthContainer extends React.Component{
     }
 
     processAuth = (data) => {
-
+        // TODO: add ajax request for reset
         if(this.state.action === "login"){
 
-            const authUrl = 'http://ddapi.awave.site/wp-json/jwt-auth/v1/token';
-            // const authUrl = 'https://ddapi.codekip.com/wp-json/jwt-auth/v1/token';
+            const authUrl = 'https://api.dailydo.lv/wp-json/jwt-auth/v1/token';
             const postBody = {
-                username: 'kirillgalenko@gmail.com',
-                password: 'BfgNOH9Bv0SAgbIUU8'
-                // username: data[0],
-                // password: data[1]
+                username: data[0],
+                password: data[1]
             };
             const requestMetadata = {
                 method: 'POST',
@@ -81,19 +98,12 @@ export default class AuthContainer extends React.Component{
             fetch(authUrl, requestMetadata)
                 .then(res => res.json())
                 .then(response => {
-                    // this.setState({ recipes });
-                    console.log(response);
-
                     if(typeof response.token !== 'undefined'){
-                        console.log("logging token");
                         localStorage.setItem('token', response.token);
                         this.props.pushToken(response.token);
                     }else{
-                        console.log("setting state");
                         this.setState({errors: ['Something went wrong, please try again']});
-                        console.log(this.state);
                     }
-
                 });
         }
     }
@@ -104,9 +114,9 @@ export default class AuthContainer extends React.Component{
 
         return(
             <div className="auth-wrap">
-                
+                {this.state.action !== 'reset' &&
                 <AuthMenu setCurrentAction={this.setCurrentAction} action={this.state.action} actions={this.actions} />
-                
+                }
                 <AuthForm errors={this.state.errors} processAuth={this.processAuth} action={this.state.action} inputs={this.inputs} inputList={inputList} submitLabel={submitLabel} />
             </div>
         );

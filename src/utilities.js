@@ -14,3 +14,16 @@ export const array_move = (arr, old_index, new_index) => {
     arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
     return arr; // for testing purposes
 };
+
+export function findGetParameter(parameterName) {
+    let result = null,
+        tmp = [];
+    window.location.search
+        .substr(1)
+        .split("&")
+        .forEach(function (item) {
+            tmp = item.split("=");
+            if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+        });
+    return result;
+}

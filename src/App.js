@@ -26,13 +26,13 @@ export default class App extends React.Component{
         this.setState({token: false});
         localStorage.removeItem('token');
     }
-    render(){
 
+    render(){
         return (
             <div className="App">
                 {this.state.token ?
                     <div><Nav destroyToken={this.destroyToken} /><TodoList /></div> :
-                    <AuthContainer pushToken={this.pushToken} />}
+                    <AuthContainer action={this.props.action ?? 'login'} pushToken={this.pushToken} />}
             </div>
         );
     }
