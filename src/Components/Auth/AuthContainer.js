@@ -80,7 +80,7 @@ export default class AuthContainer extends React.Component{
         this.setState({action: action, success_message: false, processing: false});
     }
 
-    processAuth = (data, forceAction = false) => {
+    processAuth = (data, forceAction = "none") => {
         this.setState({processing: true})
         // TODO: add ajax request for reset
         if(this.state.action === "login" || forceAction === "login"){
@@ -97,12 +97,15 @@ export default class AuthContainer extends React.Component{
                 },
                 body: JSON.stringify(postBody)
             };
+
             fetch(authUrl, requestMetadata)
                 .then(res => res.json())
                 .then(response => {
                     if(typeof response.token !== 'undefined'){
                         localStorage.setItem('token', response.token);
                         this.props.pushToken(response.token);
+
+
                     }else{
                         this.setState({errors: ['Something went wrong, please try again'], processing: false});
                     }

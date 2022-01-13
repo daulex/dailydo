@@ -15,13 +15,13 @@ export default class App extends React.Component{
             }
         }
         this.pushToken = this.pushToken.bind(this);
-        this.destroyToken = this.destroyToken.bind(this);
+        this.logOut = this.logOut.bind(this);
     }
 
     pushToken = (token) => {
         this.setState({token: token});
     }
-    destroyToken = (e) => {
+    logOut = (e) => {
         e.preventDefault();
         this.setState({token: false});
         localStorage.removeItem('token');
@@ -31,7 +31,7 @@ export default class App extends React.Component{
         return (
             <div className="App">
                 {this.state.token ?
-                    <div><Nav destroyToken={this.destroyToken} /><TodoList /></div> :
+                    <div><Nav logOut={this.logOut} /><TodoList /></div> :
                     <AuthContainer action={this.props.action ?? 'login'} pushToken={this.pushToken} />}
             </div>
         );
