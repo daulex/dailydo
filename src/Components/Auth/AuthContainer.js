@@ -80,10 +80,10 @@ export default class AuthContainer extends React.Component{
         this.setState({action: action, success_message: false, processing: false});
     }
 
-    processAuth = (data) => {
+    processAuth = (data, forceAction = false) => {
         this.setState({processing: true})
         // TODO: add ajax request for reset
-        if(this.state.action === "login"){
+        if(this.state.action === "login" || forceAction === "login"){
 
             const authUrl = process.env.REACT_APP_API_DOMAIN + '/wp-json/jwt-auth/v1/token';
             const postBody = {
@@ -97,7 +97,6 @@ export default class AuthContainer extends React.Component{
                 },
                 body: JSON.stringify(postBody)
             };
-
             fetch(authUrl, requestMetadata)
                 .then(res => res.json())
                 .then(response => {
@@ -120,6 +119,30 @@ export default class AuthContainer extends React.Component{
 
             this.setState({success_message: "Password reset link will be sent shortly."});
 
+        }else if(this.state.action === "reset"){
+
+            const authUrl = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/reset-password/';
+            const body = {
+                username: data[0],
+                key: data[1],
+                password: data[2],
+            };
+            const payload = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            };
+            fetch(authUrl, payload)
+                .then(res => res.json())
+                .then(response => {
+                    if(parseInt(response)){
+                        this.processAuth([data[0], data[2]], "login");
+                    }else{
+                        this.setState({errors: ['Something went wrong. Please try again. ']});
+                    }
+                });
         }
     }
 

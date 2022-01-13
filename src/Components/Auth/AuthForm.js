@@ -53,15 +53,19 @@ export class AuthForm extends React.Component{
     handleSubmit = (e) => {
         e.preventDefault();
         this.validate();
-        if(!this.state.errors.length){
 
-            const data = this.props.inputList.map(fieldRef => {
-                return this.state[fieldRef];
-            });
+        setTimeout(function (){
+            if(!this.state.errors.length){
 
-            this.props.processAuth(data);
+                const data = this.props.inputList.map(fieldRef => {
+                    return this.state[fieldRef];
+                });
 
-        }
+                this.props.processAuth(data);
+
+            }
+        }.bind(this),100);
+
     }
     componentDidUpdate( prevProps) {
         if (prevProps.action !== this.props.action) {
