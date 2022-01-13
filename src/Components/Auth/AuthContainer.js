@@ -8,7 +8,9 @@ export default class AuthContainer extends React.Component{
 
         this.state = { 
             action: this.props.action ?? "login",
-            errors: []
+            errors: [],
+            success_message: false,
+            processing: false
         };
 
         this.actions = {
@@ -75,14 +77,15 @@ export default class AuthContainer extends React.Component{
     }
 
     setCurrentAction = (action) => {
-        this.setState({action: action});
+        this.setState({action: action, success_message: false, processing: false});
     }
 
     processAuth = (data) => {
+        this.setState({processing: true})
         // TODO: add ajax request for reset
         if(this.state.action === "login"){
 
-            const authUrl = 'https://api.dailydo.lv/wp-json/jwt-auth/v1/token';
+            const authUrl = process.env.REACT_APP_API_DOMAIN + '/wp-json/jwt-auth/v1/token';
             const postBody = {
                 username: data[0],
                 password: data[1]
@@ -102,9 +105,21 @@ export default class AuthContainer extends React.Component{
                         localStorage.setItem('token', response.token);
                         this.props.pushToken(response.token);
                     }else{
-                        this.setState({errors: ['Something went wrong, please try again']});
+                        this.setState({errors: ['Something went wrong, please try again'], processing: false});
                     }
                 });
+        }else if(this.state.action === "recover"){
+
+            const url = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/reset-password/' + data[0];
+
+            fetch(url)
+                .then(res => res.json())
+                .then(() => {
+                    // console.log("req sent");
+                });
+
+            this.setState({success_message: "Password reset link will be sent shortly."});
+
         }
     }
 
@@ -117,7 +132,9 @@ export default class AuthContainer extends React.Component{
                 {this.state.action !== 'reset' &&
                 <AuthMenu setCurrentAction={this.setCurrentAction} action={this.state.action} actions={this.actions} />
                 }
-                <AuthForm errors={this.state.errors} processAuth={this.processAuth} action={this.state.action} inputs={this.inputs} inputList={inputList} submitLabel={submitLabel} />
+                {this.state.success_message ? <div className="alert alert-primary my-3">{this.state.success_message}</div> :
+                <AuthForm errors={this.state.errors} processAuth={this.processAuth} action={this.state.action} inputs={this.inputs} inputList={inputList} submitLabel={submitLabel} processing={this.state.processing} />
+                }
             </div>
         );
     }

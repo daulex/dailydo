@@ -97,8 +97,10 @@ export class AuthForm extends React.Component{
                 ))}
 
 
-            <div className="submit-wrap d-grid gap-2">
-                    <Button size="lg" variant="primary" type="submit" disabled={this.state.errors.length > 0}>{this.props.submitLabel}</Button>
+                <div className="submit-wrap d-grid gap-2">
+                    <Button size="lg" variant="primary" type="submit" disabled={this.state.errors.length > 0 || this.state.processing}>
+                        {this.props.submitLabel}
+                    </Button>
                 </div>
             </Form>
         );

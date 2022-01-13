@@ -9,7 +9,7 @@ export default class App extends React.Component{
         this.state = {
             token: localStorage.getItem('token') || false,
             conf: {
-                apiDomain: 'http://ddapi.awave.site',
+                apiDomain: process.env.REACT_APP_API_DOMAIN,
                 todosRoute: '/wp-json/myplugin/v1/author/1',
                 authRoute: '/wp-json/jwt-auth/v1/token'
             }

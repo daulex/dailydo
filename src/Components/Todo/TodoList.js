@@ -17,7 +17,7 @@ export class TodoList extends React.Component{
         this.handleTaskEdit = this.handleTaskEdit.bind(this);
     }
     syncStateToDB = () => {
-        const authUrl = 'http://ddapi.awave.site/wp-json/ddapi/update-todo';
+        const authUrl = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/update-todo';
         const token = localStorage.getItem('token');
 
         fetch(authUrl,{
@@ -129,7 +129,9 @@ export class TodoList extends React.Component{
     }
 
     componentDidMount() {
-        const authUrl = 'http://ddapi.awave.site/wp-json/myplugin/v1/author/1';
+
+        // TODO: this should be getting a specific todo list for a specific user
+        const authUrl = process.env.REACT_APP_API_DOMAIN + '/wp-json/myplugin/v1/author/1';
         const token = localStorage.getItem('token');
 
         fetch(authUrl,{
