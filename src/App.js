@@ -30,7 +30,7 @@ export default class App extends React.Component{
     render(){
         return (
             <div className="App">
-                {this.state.token ?
+                {this.state.token && this.props.action !== 'verify' ?
                     <div><Nav logOut={this.logOut} /><TodoList /></div> :
                     <AuthContainer action={this.props.action ?? 'login'} pushToken={this.pushToken} />}
             </div>

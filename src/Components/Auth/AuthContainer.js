@@ -1,6 +1,7 @@
 import React from 'react';
 import AuthMenu from './AuthMenu';
 import { AuthForm } from './AuthForm';
+import {payloadMaker} from "../../utilities";
 
 export default class AuthContainer extends React.Component{
     constructor(props){
@@ -37,6 +38,12 @@ export default class AuthContainer extends React.Component{
                 title: "Reset",
                 buttonLabel: "Reset password",
                 inputs: ["reset_email", "reset_token", "password", "password_confirm"]
+            },
+            verify: {
+                name: "verify",
+                title: "Verify",
+                buttonLabel: "Verify email",
+                inputs: ["verify_email"]
             }
         }
 
@@ -51,6 +58,12 @@ export default class AuthContainer extends React.Component{
                 name: "reset_email",
                 type: "text",
                 label: "Reset email",
+                disabled: "disabled"
+            },
+            verify_email: {
+                name: "verify_email",
+                type: "text",
+                label: "Verify email",
                 disabled: "disabled"
             },
             reset_token: {
@@ -82,34 +95,26 @@ export default class AuthContainer extends React.Component{
 
     processAuth = (data, forceAction = "none") => {
         this.setState({processing: true})
-        // TODO: add ajax request for reset
+
         if(this.state.action === "login" || forceAction === "login"){
 
             const authUrl = process.env.REACT_APP_API_DOMAIN + '/wp-json/jwt-auth/v1/token';
-            const postBody = {
+            const body = {
                 username: data[0],
                 password: data[1]
             };
-            const requestMetadata = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(postBody)
-            };
 
-            fetch(authUrl, requestMetadata)
+            fetch(authUrl, payloadMaker(body) )
                 .then(res => res.json())
                 .then(response => {
                     if(typeof response.token !== 'undefined'){
                         localStorage.setItem('token', response.token);
                         this.props.pushToken(response.token);
-
-
                     }else{
                         this.setState({errors: ['Something went wrong, please try again'], processing: false});
                     }
                 });
+
         }else if(this.state.action === "recover"){
 
             const url = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/reset-password/' + data[0];
@@ -122,7 +127,28 @@ export default class AuthContainer extends React.Component{
 
             this.setState({success_message: "Password reset link will be sent shortly."});
 
-        }else if(this.state.action === "reset"){
+        }else if(this.state.action === "verify"){
+
+            const url = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/verify-email/';
+            const body = {
+                key: data[0],
+            };
+
+            fetch(url, payloadMaker(body) )
+                .then(res => res.json())
+                .then(response => {
+
+                    if (parseInt(response)) {
+                        this.setState({success_message: "Email verified... Redirecting."});
+                        setTimeout(function(){window.location = "/";}, 300);
+                    } else {
+                        this.setState({errors: ['Something went wrong. Please try again. '], processing: false});
+                    }
+                });
+
+
+
+        }else if(this.state.action === "reset") {
 
             const authUrl = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/reset-password/';
             const body = {
@@ -130,20 +156,30 @@ export default class AuthContainer extends React.Component{
                 key: data[1],
                 password: data[2],
             };
-            const payload = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body)
-            };
-            fetch(authUrl, payload)
+
+            fetch(authUrl, payloadMaker(body) )
                 .then(res => res.json())
                 .then(response => {
-                    if(parseInt(response)){
+                    if (parseInt(response)) {
                         this.processAuth([data[0], data[2]], "login");
-                    }else{
-                        this.setState({errors: ['Something went wrong. Please try again. ']});
+                    } else {
+                        this.setState({errors: ['Something went wrong. Please try again. '], processing: false});
+                    }
+                });
+        }else if(this.state.action === "register"){
+            const regUrl = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/register/';
+            const body = {
+                username: data[0],
+                password: data[1],
+            };
+
+            fetch(regUrl, payloadMaker(body) )
+                .then(res => res.json())
+                .then(response => {
+                    if (parseInt(response)) {
+                        this.processAuth([data[0], data[1]], "login");
+                    } else {
+                        this.setState({errors: ['Something went wrong. Please try again. '], processing: false});
                     }
                 });
         }
@@ -155,7 +191,7 @@ export default class AuthContainer extends React.Component{
 
         return(
             <div className="auth-wrap">
-                {this.state.action !== 'reset' &&
+                {!['reset','verify'].includes(this.state.action)  &&
                 <AuthMenu setCurrentAction={this.setCurrentAction} action={this.state.action} actions={this.actions} />
                 }
                 {this.state.success_message ? <div className="alert alert-primary my-3">{this.state.success_message}</div> :

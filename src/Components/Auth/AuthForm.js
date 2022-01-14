@@ -7,6 +7,7 @@ let regEmail = /.+@.+\..+/;
 
 const resetEmail = findGetParameter('em');
 const resetToken = findGetParameter('to');
+const verifyKey = findGetParameter('key');
 
 export class AuthForm extends React.Component{
     constructor(props){
@@ -17,6 +18,7 @@ export class AuthForm extends React.Component{
             password_confirm: '',
             reset_email: resetEmail,
             reset_token: resetToken,
+            verify_email: verifyKey,
             errors: this.props.errors || []
         };
 
@@ -99,7 +101,6 @@ export class AuthForm extends React.Component{
                     />
                     </Form.Group>
                 ))}
-
 
                 <div className="submit-wrap d-grid gap-2">
                     <Button size="lg" variant="primary" type="submit" disabled={this.state.errors.length > 0 || this.state.processing}>

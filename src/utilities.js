@@ -27,3 +27,13 @@ export function findGetParameter(parameterName) {
         });
     return result;
 }
+
+export function payloadMaker(body){
+    return {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    };
+}

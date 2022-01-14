@@ -4,7 +4,6 @@ import {useNavigate} from "react-router-dom";
 export const Nav = (props) => {
     const navigate = useNavigate();
     const handleClick = (e) => {
-
         navigate('/');
         props.logOut(e);
     }

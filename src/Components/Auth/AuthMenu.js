@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function AuthMenu(props){
     const navigate = useNavigate();
     const handleMenuButtonClick = (e) => {
-        
+
         let action = e.target.getAttribute("attr-action");
         
         if(!action) return;
@@ -17,6 +17,7 @@ export default function AuthMenu(props){
 
     const menuItems = props.actions;
     delete menuItems.reset;
+    delete menuItems.verify;
 
     return(
         <Nav variant={"tabs"} defaultActiveKey={"action-" + props.action}>

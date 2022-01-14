@@ -14,6 +14,7 @@ ReactDOM.render(
               <Route path="user/register" element={<App action='register' />} />
               <Route path="user/recover" element={<App action='recover' />} />
               <Route path="user/reset" element={<App action='reset' />} />
+              <Route path="user/verify" element={<App action='verify' />} />
           </Routes>
       </BrowserRouter>
   </React.StrictMode>,
