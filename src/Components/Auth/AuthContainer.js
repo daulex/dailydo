@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthMenu from './AuthMenu';
 import { AuthForm } from './AuthForm';
-import {payloadMaker} from "../../utilities";
+import { payloadMaker } from "../../utilities";
 
 export default class AuthContainer extends React.Component{
     constructor(props){

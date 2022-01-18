@@ -8,11 +8,6 @@ export default class App extends React.Component{
         super(props);
         this.state = {
             token: localStorage.getItem('token') || false,
-            conf: {
-                apiDomain: process.env.REACT_APP_API_DOMAIN,
-                todosRoute: '/wp-json/myplugin/v1/author/1',
-                authRoute: '/wp-json/jwt-auth/v1/token'
-            }
         }
         this.pushToken = this.pushToken.bind(this);
         this.logOut = this.logOut.bind(this);
@@ -27,12 +22,18 @@ export default class App extends React.Component{
         localStorage.removeItem('token');
     }
 
+
+
     render(){
+
+        if(!this.state.token || this.props.action === 'verify'){
+            return(<AuthContainer action={this.props.action ?? 'login'} pushToken={this.pushToken} />);
+        }
+
         return (
             <div className="App">
-                {this.state.token && this.props.action !== 'verify' ?
-                    <div><Nav logOut={this.logOut} /><TodoList /></div> :
-                    <AuthContainer action={this.props.action ?? 'login'} pushToken={this.pushToken} />}
+                <Nav logOut={this.logOut} />
+                <TodoList />
             </div>
         );
     }
