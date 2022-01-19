@@ -130,16 +130,15 @@ export class TodoList extends React.Component{
 
     componentDidMount() {
 
-        // TODO: this should be getting a specific todo list for a specific user
-        const authUrl = process.env.REACT_APP_API_DOMAIN + '/wp-json/myplugin/v1/author/1';
+        const authUrl = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/todo/get';
         const token = localStorage.getItem('token');
 
-        fetch(authUrl,{
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer' + token
-            }
-        })
+        fetch(authUrl, {
+                method: 'GET',
+                headers: {
+                        'Authorization': 'Bearer' + token
+                    }
+                })
             .then(response => response.json())
             .then(data => {
                 const parsed = JSON.parse(data);
