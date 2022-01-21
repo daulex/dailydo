@@ -1,5 +1,6 @@
 import React from 'react';
 import { TodoList } from './Components/Todo/TodoList';
+import { PastTodos } from './Components/Todo/PastTodos';
 import { Nav } from './Components/Nav/Nav';
 import AuthContainer from './Components/Auth/AuthContainer';
 
@@ -41,7 +42,7 @@ export default class App extends React.Component{
                 res = <TodoList />;
             break;
             case 'todos':
-                res = <h1>todos</h1>;
+                res = <PastTodos />;
             break;
             default:
                 res = <h1>404</h1>;
