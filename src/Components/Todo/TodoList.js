@@ -3,11 +3,14 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import {array_move} from '../../utilities';
 import { TodoItem } from './TodoItem';
+import { useParams } from 'react-router-dom';
+
 
 export const TodoList = (props) => {
     const [ initialLoad, setInitialLoad ] = useState(false);
     const [ syncRequired, setSyncRequired ] = useState(false);
     const [ todos, setTodos ] = useState([]);
+    let { id } = useParams();
 
 
     const syncStateToDB = () => {
@@ -117,10 +120,16 @@ export const TodoList = (props) => {
     });   
 
     useEffect(() => {
-        console.log(syncRequired);
+        
+
+        
+        
         if(!initialLoad){
             let url = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/todo/get';
             const token = localStorage.getItem('token');
+            if(typeof id !== 'undefined'){
+                url += '/' + id;
+            }
                 
             fetch(url, {
                 method: 'GET',
@@ -131,7 +140,7 @@ export const TodoList = (props) => {
             .then(response => response.json())
             .then(data => {
                 if(data !== 404){
-                
+                console.log(data);
                     setTodos( JSON.parse(data) );
                 }
             });
