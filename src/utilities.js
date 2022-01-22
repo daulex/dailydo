@@ -37,3 +37,12 @@ export function payloadMaker(body){
         body: JSON.stringify(body)
     };
 }
+
+export function key_to_date(key){
+    let res = key.split("_")[1];
+    res = res.slice(0,4) +"-"+ res.slice(4,6) +"-"+ res.slice(6,8);
+    res = new Date( Date.parse(res) );
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+    return res.toLocaleDateString(undefined, options);
+}

@@ -44,6 +44,9 @@ export default class App extends React.Component{
             case 'todos':
                 res = <PastTodos />;
             break;
+            case 'pastTodo':
+                res = <TodoList />;
+            break;
             default:
                 res = <h1>404</h1>;
         }

@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import {array_move} from '../../utilities';
 
+
 export class TodoList extends React.Component{
     constructor(props){
         super(props);
@@ -122,7 +123,7 @@ export class TodoList extends React.Component{
                 <Form onSubmit={this.handleTaskCreate} className='new-task-form'>
                 
                 <Form.Label htmlFor="inlineFormInputName" visuallyHidden>
-                Name
+                Describe your new task
                 </Form.Label>
                 <Form.Control name="newTaskText" id="newTaskText" placeholder="Describe your new task" />
                 <Button type="submit">Add</Button>
@@ -144,10 +145,11 @@ export class TodoList extends React.Component{
             
             componentDidMount() {
                 
-                const authUrl = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/todo/get';
+                let url = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/todo/get';
                 const token = localStorage.getItem('token');
+                console.log();
                 
-                fetch(authUrl, {
+                fetch(url, {
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer' + token
