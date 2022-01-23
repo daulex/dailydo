@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 export const PastTodos = (props) => {
     const [list, setList] = useState([]);
     useEffect(() => {
+        let isMounted = true;
         const authUrl = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/todo/get/000';
         const token = localStorage.getItem('token');
                 
@@ -16,12 +17,14 @@ export const PastTodos = (props) => {
         })
         .then(response => response.json())
         .then(data => {
-            if(data !== 404){
+            if(data !== 404 && isMounted){
                 const parsed = JSON.parse(data);
                 // this.setState({todos: parsed });
                 setList(parsed);
             }
         });
+
+        return () => isMounted = false;
     });
     return(
         <div className="todos-all">

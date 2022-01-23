@@ -20,7 +20,7 @@ ReactDOM.render(
               <Route path="settings" element={<App action='settings' />} />
 
               <Route path="todos" element={<App action='todos' />} />
-              <Route path="todos/:id" element={<App action='pastTodo' />} />
+              <Route path="todos/:id" element={<App action='pastTodo' key={Math.random()} />} />
               <Route path="templates" element={<App action='templates' />} />
               
           </Routes>

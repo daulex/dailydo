@@ -8,9 +8,9 @@ import { useParams } from 'react-router-dom';
 
 export const TodoList = (props) => {
     const [ todos, _setTodos ] = useState([]);
+    const { mode } = props ?? false;
     let { id } = useParams();
 
-    
     
 
     const syncStateToDB = (newTodos) => {
@@ -120,11 +120,11 @@ export const TodoList = (props) => {
     });   
 
     useEffect(() => {
-        
+        let isSubscribed = true;
         let url = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/todo/get';
         const token = localStorage.getItem('token');
-        console.log('tick');
-        if(typeof id !== 'undefined'){
+        
+        if(mode === 'specific' && typeof id !== 'undefined'){
             url += '/' + id;
         }
             
@@ -136,13 +136,13 @@ export const TodoList = (props) => {
         })
         .then(response => response.json())
         .then(data => {
-            if(data !== 404){
+            if(data !== 404 && isSubscribed){
                 _setTodos( JSON.parse(data) );
             }
         });
         
-        
-    }, [id, _setTodos]);
+        return () => (isSubscribed = false);
+    }, [id, _setTodos, mode]);
 
     return(
         <div className="todos">

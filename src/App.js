@@ -21,7 +21,7 @@ export default class App extends React.Component{
     }
     logOut = (e) => {
         e.preventDefault();
-        this.setState({token: false});
+        this.setState({token: false, action: 'today'});
         localStorage.removeItem('token');
     }
     setNewAction = (action) => {
@@ -45,7 +45,7 @@ export default class App extends React.Component{
                 res = <PastTodos />;
             break;
             case 'pastTodo':
-                res = <TodoList initialLoad={true} />;
+                res = <TodoList mode="specific" />;
             break;
             default:
                 res = <h1>404</h1>;
