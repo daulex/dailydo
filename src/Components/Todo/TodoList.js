@@ -7,14 +7,14 @@ import { useParams } from 'react-router-dom';
 
 
 export const TodoList = (props) => {
-    const [ initialLoad, setInitialLoad ] = useState(false);
-    const [ syncRequired, setSyncRequired ] = useState(false);
-    const [ todos, setTodos ] = useState([]);
+    const [ todos, _setTodos ] = useState([]);
     let { id } = useParams();
 
+    
+    
 
-    const syncStateToDB = () => {
-        console.log('sync triggered');
+    const syncStateToDB = (newTodos) => {
+        
         const authUrl = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/update-todo';
         const token = localStorage.getItem('token');
         
@@ -23,13 +23,19 @@ export const TodoList = (props) => {
             headers: {
                 'Authorization': 'Bearer' + token
             },
-            body: JSON.stringify({todos: todos})
+            body: JSON.stringify({todos: newTodos, id: id})
         }).then(response => {
             if(response.status !== 200){
                 console.log('Something went wrong');
             }
         });
     };
+
+    const setTodos = (todos) => {
+        _setTodos(todos);
+        syncStateToDB(todos);
+    };
+
     const handleChange = id => {
         
         setTodos(
@@ -43,7 +49,6 @@ export const TodoList = (props) => {
                 return todo;
             })
         );
-        setSyncRequired(true);
     }
     const handleTaskEdit = (id, newText) => {
         
@@ -57,7 +62,6 @@ export const TodoList = (props) => {
                 return todo;
             }) );
 
-        setSyncRequired(true);
     }
     const handleTaskCreate = e => {
         e.preventDefault();
@@ -79,14 +83,12 @@ export const TodoList = (props) => {
                 text: val,
                 completed: false
             }] );
-            setSyncRequired(true);
         }
     }
     const handleTaskDelete = x => {
         setTodos( todos.filter(task => {
             return task.id !== x;
         }) );
-        setSyncRequired(true);
     }
 
     const handleTaskMove = (x, direction) => {
@@ -102,9 +104,7 @@ export const TodoList = (props) => {
         }
         array_move(todos, currentIndex, newIndex);
         
-
         setTodos( todos );
-        setSyncRequired(true);
             
     }
 
@@ -121,38 +121,28 @@ export const TodoList = (props) => {
 
     useEffect(() => {
         
-
-        
-        
-        if(!initialLoad){
-            let url = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/todo/get';
-            const token = localStorage.getItem('token');
-            if(typeof id !== 'undefined'){
-                url += '/' + id;
-            }
-                
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer' + token
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data !== 404){
-                console.log(data);
-                    setTodos( JSON.parse(data) );
-                }
-            });
-            setInitialLoad(true);
+        let url = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/todo/get';
+        const token = localStorage.getItem('token');
+        console.log('tick');
+        if(typeof id !== 'undefined'){
+            url += '/' + id;
+        }
             
-        }
-        if(syncRequired){
-            syncStateToDB();
-            setSyncRequired(false);
-        }
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer' + token
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data !== 404){
+                _setTodos( JSON.parse(data) );
+            }
+        });
         
-    });
+        
+    }, [id, _setTodos]);
 
     return(
         <div className="todos">
