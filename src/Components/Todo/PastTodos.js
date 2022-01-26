@@ -25,7 +25,7 @@ export const PastTodos = (props) => {
         });
 
         return () => isMounted = false;
-    });
+    }, []);
     return(
         <div className="todos-all">
             <h1>Past todos list</h1>
