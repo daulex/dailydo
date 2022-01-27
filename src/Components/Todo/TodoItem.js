@@ -2,16 +2,15 @@ import React, {useState} from 'react';
 // import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import {Icon} from "../IcoMoon/Icon";
+import { DeleteButton } from './DeleteButton';
 
 export const TodoItem = (props) => {
     const [taskActionsShowing, setTaskActionsShowing] = useState(0);
-    const [deleteConfirmShowing, setDeleteConfirmShowing] = useState(0);
     const [editTaskShowing, setEditTaskShowing] = useState(0);
 
     const checked = !!props.item.completed;
 
-    const deleteItem = (e) => {
-        e.preventDefault();
+    const deleteItem = () => {
         props.handleTaskDelete(props.item.id);
     }
     const moveItem = (e,direction) => {
@@ -65,26 +64,7 @@ export const TodoItem = (props) => {
                     ><Icon color="#f00" size="14px" icon="arrow-down" /></button>
                 </div>
 
-            {deleteConfirmShowing
-                ?
-                <div className="task-action task-actions__delete-confirmation">
-                    <button
-                        onClick={deleteItem}
-                        className="icon-button icon-button__check"
-                    ><Icon color="#f00" size="14px" icon="check" /></button>
-                    <button
-                        onClick={() => setDeleteConfirmShowing(!deleteConfirmShowing)}
-                        className="icon-button icon-button__close"
-                    ><Icon color="#444" size="14px" icon="close" /></button>
-                </div>
-                :
-                <div className="task-action task-actions__delete">
-                    <button
-                        onClick={() => setDeleteConfirmShowing(!deleteConfirmShowing)}
-                        className="icon-button icon-button__bin"
-                    ><Icon color="#333" size="14px" icon="bin" /></button>
-                </div>
-            }
+            <DeleteButton deleteItem={deleteItem} />
         </div>
         );
     }
