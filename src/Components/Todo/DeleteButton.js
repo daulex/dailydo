@@ -7,7 +7,7 @@ export const DeleteButton = (props) => {
 
     const deleteItem = (e) => {
         e.preventDefault();
-        props.deleteItem();
+        props.deleteItem(e.currentTarget.getAttribute('data-key') ?? false);
     }
 
     if(deleteConfirmShowing){
@@ -16,6 +16,7 @@ export const DeleteButton = (props) => {
                 <button
                     onClick={deleteItem}
                     className="icon-button icon-button__check"
+                    data-key={props.metaKey ?? false}
                 ><Icon color="#f00" size="14px" icon="check" /></button>
                 <button
                     onClick={() => setDeleteConfirmShowing(!deleteConfirmShowing)}
