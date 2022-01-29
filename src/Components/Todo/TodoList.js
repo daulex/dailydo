@@ -15,7 +15,7 @@ export const TodoList = (props) => {
 
     const syncStateToDB = (newTodos) => {
         
-        const authUrl = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/update-todo';
+        const authUrl = process.env.REACT_APP_API_DOMAIN + '/wp-json/ddapi/todo/update';
         const token = localStorage.getItem('token');
         
         fetch(authUrl,{
