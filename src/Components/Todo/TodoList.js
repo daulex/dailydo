@@ -37,18 +37,16 @@ export const TodoList = (props) => {
     };
 
     const handleChange = id => {
-        
-        setTodos(
-            todos.map(todo => {
-                if(todo.id === id){
-                    return {
-                        ...todo,
-                        completed: !todo.completed
-                    };
-                }
-                return todo;
-            })
-        );
+        const x = todos.map(todo => {
+            if(todo.id === id){
+                return {
+                    ...todo,
+                    completed: !todo.completed
+                };
+            }
+            return todo;
+        })
+        setTodos(x);
     }
     const handleTaskEdit = (id, newText) => {
         
@@ -73,13 +71,13 @@ export const TodoList = (props) => {
                 return object.id;
             });
             
-            let nextId = 1;
-            if(ids.length > 0){
-                nextId = Math.max(...ids) + 1;
-            }
+            // let nextId = 1;
+            // if(ids.length > 0){
+            //     nextId = Math.max(...ids) + 1;
+            // }
             
             setTodos( [...todos, {
-                id: nextId,
+                // id: nextId,
                 text: val,
                 completed: false
             }] );

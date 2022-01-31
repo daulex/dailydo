@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { Children } from 'react';
 import ReactDOM from 'react-dom';
 import './App.scss';
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+
+const publicRoute = ({children}) => {
+
+    return children;
+}
+
+const authRoute = ({children}) => {
+    ///
+}
 
 ReactDOM.render(
   <React.StrictMode>
@@ -11,7 +20,7 @@ ReactDOM.render(
           <Routes>
               <Route path="/" element={<App />} />
 
-              <Route path="user/login" element={<App action='login' />} />
+              <Route path="user/login" component={publicRoute(Login)} />
               <Route path="user/register" element={<App action='register' />} />
               <Route path="user/recover" element={<App action='recover' />} />
               <Route path="user/reset" element={<App action='reset' />} />
