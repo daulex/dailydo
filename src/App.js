@@ -1,7 +1,11 @@
+// import { TodoList } from './Components/TodoList';
+import { AuthView } from './Components/AuthView';
+
 function App() {
   return (
     <div className="App">
-        test
+      <AuthView />
+      {/* <TodoList /> */}
     </div>
   );
 }
