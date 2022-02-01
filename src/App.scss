@@ -15,4 +15,12 @@ button, input[type=submit]{
   font-size: 16px;
 }
 
-@import './scss/AuthView.scss';
+.icon-button{
+  border:0;
+  background: transparent;
+}
+
+
+@import './components/Auth/Auth.scss';
+@import './components/Todo/Todo.scss';
+@import './components/Nav/Nav.scss';

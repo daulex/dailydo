@@ -1,13 +1,65 @@
-// import { TodoList } from './Components/TodoList';
-import { AuthView } from './Components/AuthView';
+import React from 'react';
+import { TodoList } from './Components/Todo/TodoList';
+import { PastTodos } from './Components/Todo/PastTodos';
+import { Templates } from './Components/Templates/Templates';
+import { Nav } from './Components/Nav/Nav';
+import AuthContainer from './Components/Auth/AuthContainer';
 
-function App() {
-  return (
-    <div className="App">
-      <AuthView />
-      {/* <TodoList /> */}
-    </div>
-  );
-}
+export default class App extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            token: localStorage.getItem('token') || false,
+            action: this.props.action || 'today'
+        }
+        this.pushToken = this.pushToken.bind(this);
+        this.logOut = this.logOut.bind(this);
+        this.setNewAction = this.setNewAction.bind(this);
+    }
+    
+    pushToken = (token) => {
+        this.setState({token: token});
+    }
+    logOut = (e) => {
+        e.preventDefault();
+        this.setState({token: false, action: 'today'});
+        localStorage.removeItem('token');
+    }
+    setNewAction = (action) => {
+        this.setState({action: action});
+    }
+    
+    
+    
+    render(){
+        
+        if(!this.state.token || this.props.action === 'verify'){
+            return(<AuthContainer action={this.props.action ?? 'login'} pushToken={this.pushToken} />);
+        }
 
-export default App;
+        let res;
+        switch (this.state.action) {
+            case 'today':
+                res = <TodoList />;
+            break;
+            case 'todos':
+                res = <PastTodos />;
+            break;
+            case 'pastTodo':
+                res = <TodoList mode="specific" />;
+            break;
+            case 'templates':
+                res = <Templates />;
+            break;
+            default:
+                res = <h1>404</h1>;
+        }
+        
+        return (
+            <div className="App">
+                <Nav setNewAction={this.setNewAction} logOut={this.logOut} />
+                {res}
+            </div>
+            );
+        }
+    }
